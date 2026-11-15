@@ -4,11 +4,14 @@
 #include <ctype.h>
 #include <errno.h>
 #include <limits.h>
-#include <stdarg.h>
 #include <stdbool.h>
 
 static int n_resources = 0;
 static int *available = NULL;
+
+static void free_all(void){
+    free(available);
+}
 
 static void fatal(const char *fmt, ...){
     va_list ap;
@@ -17,7 +20,16 @@ static void fatal(const char *fmt, ...){
     vfprintf(stderr, fmt, ap);
     va_end(ap);
     fprintf(stderr, "\n");
+    free_all();
     exit(EXIT_FAILURE);
+}
+
+static void *xmalloc(size_t size){
+    void *p = calloc(1, size);
+    if (!p){
+        fatal("memória insuficiente.");
+    }
+    return p;
 }
 
 static bool parse_nonneg_int(const char *s, int *out){
@@ -40,11 +52,10 @@ static void parse_arguments(int argc, char *argv[]){
     }
 
     n_resources = argc - 1;
-    available = malloc(sizeof(int) * n_resources);
+    available = xmalloc(sizeof(int) * n_resources);
 
     for (int j = 0; j < n_resources; j++){
         if (!parse_nonneg_int(argv[j + 1], &available[j])){
-            free(available);
             fatal("argumento %d (\"%s\") inválido: o número de instâncias de " "cada recurso deve ser um inteiro não negativo.", j + 1, argv[j + 1]);
         }
     }
@@ -55,6 +66,6 @@ int main(int argc, char *argv[]){
     for (int j = 0; j < n_resources; j++){
         printf("recurso %d: %d instancias\n", j, available[j]);
     }
-    free(available);
-    return EXIT_SUCCESS;
+    free_all();
+    return EXIT_SUCCESS; 
 }

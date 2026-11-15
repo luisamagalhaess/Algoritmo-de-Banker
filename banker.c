@@ -1,3 +1,6 @@
+#define _POSIX_C_SOURCE 200809L
+#define CUSTOMER_FILE "customer.txt"
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,9 +8,11 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <string.h>
 
 static int n_resources = 0;
 static int *available = NULL;
+static int n_customers = 0;
 
 static void free_all(void){
     free(available);
@@ -61,11 +66,33 @@ static void parse_arguments(int argc, char *argv[]){
     }
 }
 
+static void read_customers(void){
+    FILE *f = fopen(CUSTOMER_FILE, "r");
+    if (!f){
+        fatal("não foi possível abrir o arquivo %s: %s.", CUSTOMER_FILE, strerror(errno));
+    }
+
+    char *line = NULL;
+    size_t cap = 0;
+    while (getline(&line, &cap, f) != -1){
+        line[strcspn(line, "\n")] = '\0';
+        if (line[0] == '\0'){
+            continue;
+        }
+        n_customers++;
+    }
+    free(line);
+    fclose(f);
+    if (n_customers == 0){
+        fatal("o arquivo %s está vazio (nenhum cliente encontrado).", CUSTOMER_FILE);
+    }
+}
+
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
-    for (int j = 0; j < n_resources; j++){
-        printf("recurso %d: %d instancias\n", j, available[j]);
-    }
+    parse_arguments(argc, argv);
+    read_customers();
+    printf("%d clientes\n", n_customers);
     free_all();
     return EXIT_SUCCESS; 
 }

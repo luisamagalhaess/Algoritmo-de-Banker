@@ -1,6 +1,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <errno.h>
+#include <limits.h>
+#include <stdarg.h>
+#include <stdbool.h>
 
 static int n_resources = 0;
 static int *available = NULL;
@@ -15,6 +20,20 @@ static void fatal(const char *fmt, ...){
     exit(EXIT_FAILURE);
 }
 
+static bool parse_nonneg_int(const char *s, int *out){
+    if (s == NULL || *s == '\0') return false;
+    for (const char *p = s; *p; p++){
+        if (!isdigit((unsigned char)*p)) return false;
+    }
+
+    errno = 0;
+    char *end;
+    long v = strtol(s, &end, 10);
+    if (errno == ERANGE || v > INT_MAX) return false;
+    *out = (int)v;
+    return true;
+}
+
 static void parse_arguments(int argc, char *argv[]){
     if (argc < 2){
         fatal("nenhum recurso informado.\nUso: %s <inst_0> <inst_1> ...", argv[0]);
@@ -24,7 +43,10 @@ static void parse_arguments(int argc, char *argv[]){
     available = malloc(sizeof(int) * n_resources);
 
     for (int j = 0; j < n_resources; j++){
-        available[j] = atoi(argv[j + 1]);
+        if (!parse_nonneg_int(argv[j + 1], &available[j])){
+            free(available);
+            fatal("argumento %d (\"%s\") inválido: o número de instâncias de " "cada recurso deve ser um inteiro não negativo.", j + 1, argv[j + 1]);
+        }
     }
 }
 

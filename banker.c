@@ -83,7 +83,7 @@ static void read_customers(void){
     int capacity = 0;
     while (getline(&line, &cap, f) != -1){
         line_no++;
-        line[strcspn(line, "\n")] = '\0';
+        line[strcspn(line, "\r\n")] = '\0';
         if (line[0] == '\0'){
             continue;
         }

@@ -153,4 +153,25 @@ cp: cannot stat '/mnt/c/Users/luisa/Downloads/banker.c': No such file or directo
 [?2004l
 [?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7mprintf '7,5,3\n3,2,2\n9,0,2\n2,2,2\[27m[7mn[27m[7m4,3,3\n' > customer.txt[27m[A
 ]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ printf '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n' > customer.txt
-[?2004l
+[?2004lScript started on 2026-11-15 19:42:27-03:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="123" LINES="24"]
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ make
+[?2004lgcc -Wall -Wextra -Wpedantic -std=c11 banker.c -o banker
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7m./banker 10 5 7  [27m[1P./banker 10 5 7 [K
+[?2004lrecurso 0: 10 instancias
+recurso 1: 5 instancias
+recurso 2: 7 instancias
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7m./banker 10 abc 7[27m./banker 10 abc 7
+[?2004lErro: argumento 2 ("abc") inválido: o número de instâncias de cada recurso deve ser um inteiro não negativo.
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ make
+[?2004lgcc -Wall -Wextra -Wpedantic -std=c11 banker.c -o banker
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7mprintf '7,5,3\n3,2,2\n9,0,2\n2,2,2\[27m[7mn[27m[7m4,3,3\n' > customer.txt[27m[A]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ printf '7,5,3\n3,2,2\n9,0,2\n2,2,2\n4,3,3\n' > customer.txt
+[?2004l[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7m./banker 10 5 7[27m./banker 10 5 7
+[?2004l5 clientes
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7mmv customer.txt c.bak[27mmv customer.txt c.bak
+[?2004l[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7m./banker 10 5 7[27m./banker 10 5 7
+[?2004lErro: não foi possível abrir o arquivo customer.txt: No such file or directory.
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7m: > customer.txt[27m: > customer.txt
+[?2004l[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7m./banker 10 5 7 [27m./banker 10 5 7 
+[?2004lErro: o arquivo customer.txt está vazio (nenhum cliente encontrado).
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [7mmv c.bak customer.txt[27mmv c.bak customer.txt
+[?2004l[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/lu

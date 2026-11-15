@@ -13,8 +13,13 @@
 static int n_resources = 0;
 static int *available = NULL;
 static int n_customers = 0;
+static int **maximum = NULL;
 
 static void free_all(void){
+    for (int i = 0; i < n_customers; i++){
+        free(maximum[i]);
+    }
+    free(maximum);
     free(available);
 }
 
@@ -74,12 +79,54 @@ static void read_customers(void){
 
     char *line = NULL;
     size_t cap = 0;
+    int line_no = 0;
+    int capacity = 0;
     while (getline(&line, &cap, f) != -1){
+        line_no++;
         line[strcspn(line, "\n")] = '\0';
         if (line[0] == '\0'){
             continue;
         }
+        int fields = 1;
+        for (char *p = line; *p; p++){
+            if (*p == ','){
+                fields++;
+            }
+        }
+        if (fields != n_resources){
+            free(line);
+            fclose(f);
+            fatal("%s, linha %d: o cliente possui %d recurso(s), mas foram " "informados %d recurso(s) na linha de comando.", CUSTOMER_FILE, line_no, fields, n_resources);
+        }
+        if (n_customers == capacity){
+            capacity = capacity ? capacity * 2 : 8;
+            int **tmp = realloc(maximum, sizeof(int *) * capacity);
+            if (!tmp){
+                free(line);
+                fclose(f);
+                fatal("memória insuficiente.");
+            }
+            maximum = tmp;
+        }
+        maximum[n_customers] = xmalloc(sizeof(int) * n_resources);
         n_customers++;
+        char *p = line;
+        for (int j = 0; j < n_resources; j++){
+            char *comma = strchr(p, ',');
+            if (comma){
+                *comma = '\0';
+            }
+            if (!parse_nonneg_int(p, &maximum[n_customers - 1][j])){
+                char copy[64];
+                snprintf(copy, sizeof copy, "%s", p);
+                free(line);
+                fclose(f);
+                fatal("%s, linha %d: valor \"%s\" inválido (esperado inteiro " "não negativo; formato: v1,v2,...,vn).", CUSTOMER_FILE, line_no, copy);
+            }
+            if (comma){
+                p = comma + 1;
+            }
+        }
     }
     free(line);
     fclose(f);
@@ -92,7 +139,13 @@ int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
     parse_arguments(argc, argv);
     read_customers();
-    printf("%d clientes\n", n_customers);
+        for (int i = 0; i < n_customers; i++){
+        printf("cliente %d:", i);
+        for (int j = 0; j < n_resources; j++){
+            printf(" %d", maximum[i][j]);
+        }
+        printf("\n");
+    }
     free_all();
     return EXIT_SUCCESS; 
 }

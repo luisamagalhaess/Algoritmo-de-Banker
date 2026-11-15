@@ -1,0 +1,5 @@
+banker
+*.o
+result.txt
+customer.txt
+commands.txt

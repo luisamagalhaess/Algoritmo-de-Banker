@@ -1,0 +1,65 @@
+Script started on 2026-11-15 16:57:39-03:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="123" LINES="15"]
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ make
+[?2004lgcc -Wall -Wextra -Wpedantic -std=c11 banker.c -o banker
+[01m[Kbanker.c:[m[K In function ‘[01m[Kfatal[m[K’:
+[01m[Kbanker.c:4:5:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[Kva_list[m[K’
+    4 |     [01;31m[Kva_list[m[K ap;
+      |     [01;31m[K^~~~~~~[m[K
+[01m[Kbanker.c:2:1:[m[K [01;36m[Knote: [m[K‘[01m[Kva_list[m[K’ is defined in header ‘[01m[K<stdarg.h>[m[K’; did you forget to ‘[01m[K#include <stdarg.h>[m[K’?
+    1 | #include <stdlib.h>
+  +++ |+[32m[K#include <stdarg.h>[m[K
+    2 | 
+[01m[Kbanker.c:5:5:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[Kfprintf[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+    5 |     [01;35m[Kfprintf[m[K(stderr, "Erro: ");
+      |     [01;35m[K^~~~~~~[m[K
+[01m[Kbanker.c:2:1:[m[K [01;36m[Knote: [m[Kinclude ‘[01m[K<stdio.h>[m[K’ or provide a declaration of ‘[01m[Kfprintf[m[K’
+    1 | #include <stdlib.h>
+  +++ |+[32m[K#include <stdio.h>[m[K
+    2 | 
+[01m[Kbanker.c:5:5:[m[K [01;35m[Kwarning: [m[Kincompatible implicit declaration of built-in function ‘[01m[Kfprintf[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wbuiltin-declaration-mismatch-Wbuiltin-declaration-mismatch]8;;[m[K]
+    5 |     [01;35m[Kfprintf[m[K(stderr, "Erro: ");
+      |     [01;35m[K^~~~~~~[m[K
+[01m[Kbanker.c:5:5:[m[K [01;36m[Knote: [m[Kinclude ‘[01m[K<stdio.h>[m[K’ or provide a declaration of ‘[01m[Kfprintf[m[K’
+[01m[Kbanker.c:5:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kstderr[m[K’ undeclared (first use in this function)
+    5 |     fprintf([01;31m[Kstderr[m[K, "Erro: ");
+      |             [01;31m[K^~~~~~[m[K
+[01m[Kbanker.c:5:13:[m[K [01;36m[Knote: [m[K‘[01m[Kstderr[m[K’ is defined in header ‘[01m[K<stdio.h>[m[K’; did you forget to ‘[01m[K#include <stdio.h>[m[K’?
+[01m[Kbanker.c:5:13:[m[K [01;36m[Knote: [m[Keach undeclared identifier is reported only once for each function it appears in
+[01m[Kbanker.c:6:5:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[Kva_start[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+    6 |     [01;35m[Kva_start[m[K(ap, fmt);
+      |     [01;35m[K^~~~~~~~[m[K
+[01m[Kbanker.c:7:5:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[Kvfprintf[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+    7 |     [01;35m[Kvfprintf[m[K(stderr, fmt, ap);
+      |     [01;35m[K^~~~~~~~[m[K
+[01m[Kbanker.c:7:5:[m[K [01;36m[Knote: [m[Kinclude ‘[01m[K<stdio.h>[m[K’ or provide a declaration of ‘[01m[Kvfprintf[m[K’
+[01m[Kbanker.c:7:27:[m[K [01;35m[Kwarning: [m[Kpassing argument 3 of ‘[01m[Kvfprintf[m[K’ makes pointer from integer without a cast [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wint-conversion-Wint-conversion]8;;[m[K]
+    7 |     vfprintf(stderr, fmt, [01;35m[Kap[m[K);
+      |                           [01;35m[K^~[m[K
+      |                           [01;35m[K|[m[K
+      |                           [01;35m[Kint[m[K
+[01m[Kbanker.c:7:27:[m[K [01;36m[Knote: [m[Kexpected ‘[01m[K__va_list_tag *[m[K’ but argument is of type ‘[01m[Kint[m[K’
+[01m[Kbanker.c:8:5:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[Kva_end[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+    8 |     [01;35m[Kva_end[m[K(ap);
+      |     [01;35m[K^~~~~~[m[K
+[01m[Kbanker.c:[m[K In function ‘[01m[Kparse_arguments[m[K’:
+[01m[Kbanker.c:17:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kn_resources[m[K’ undeclared (first use in this function)
+   17 |     [01;31m[Kn_resources[m[K = argc - 1;
+      |     [01;31m[K^~~~~~~~~~~[m[K
+[01m[Kbanker.c:18:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kavailable[m[K’ undeclared (first use in this function)
+   18 |     [01;31m[Kavailable[m[K = malloc(sizeof(int) * n_resources);
+      |     [01;31m[K^~~~~~~~~[m[K
+[01m[Kbanker.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[Kbanker.c:26:25:[m[K [01;31m[Kerror: [m[K‘[01m[Kn_resources[m[K’ undeclared (first use in this function)
+   26 |     for (int j = 0; j < [01;31m[Kn_resources[m[K; j++)
+      |                         [01;31m[K^~~~~~~~~~~[m[K
+[01m[Kbanker.c:27:9:[m[K [01;35m[Kwarning: [m[Kimplicit declaration of function ‘[01m[Kprintf[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wimplicit-function-declaration-Wimplicit-function-declaration]8;;[m[K]
+   27 |         [01;35m[Kprintf[m[K("recurso %d: %d instancias\n", j, available[j]);
+      |         [01;35m[K^~~~~~[m[K
+[01m[Kbanker.c:27:9:[m[K [01;36m[Knote: [m[Kinclude ‘[01m[K<stdio.h>[m[K’ or provide a declaration of ‘[01m[Kprintf[m[K’
+[01m[Kbanker.c:27:9:[m[K [01;35m[Kwarning: [m[Kincompatible implicit declaration of built-in function ‘[01m[Kprintf[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wbuiltin-declaration-mismatch-Wbuiltin-declaration-mismatch]8;;[m[K]
+[01m[Kbanker.c:27:9:[m[K [01;36m[Knote: [m[Kinclude ‘[01m[K<stdio.h>[m[K’ or provide a declaration of ‘[01m[Kprintf[m[K’
+[01m[Kbanker.c:27:50:[m[K [01;31m[Kerror: [m[K‘[01m[Kavailable[m[K’ undeclared (first use in this function)
+   27 |         printf("recurso %d: %d instancias\n", j, [01;31m[Kavailable[m[K[j]);
+      |                                                  [01;31m[K^~~~~~~~~[m[K
+make: *** [Makefile:2: banker] Error 1
+[?2004h]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [K]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [K]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [K]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [K]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [K]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [K]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[01;32mluisa@LAPTOP-Q39GM9AS[00m:[01;34m/mnt/c/Users/luisa/OneDrive/Área de Trabalho/Algoritmo-de-Banker[00m$ [K]0;luisa@LAPTOP-Q39GM9AS: /mnt/c/Users/luisa/OneDrive/Á

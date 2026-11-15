@@ -14,11 +14,21 @@ static int n_resources = 0;
 static int *available = NULL;
 static int n_customers = 0;
 static int **maximum = NULL;
+static int **allocation = NULL;
+static int **need = NULL;
 
 static void free_all(void){
     for (int i = 0; i < n_customers; i++){
         free(maximum[i]);
+        if (allocation){
+            free(allocation[i]);
+        }
+        if (need){
+            free(need[i]);
+        }
     }
+    free(allocation);
+    free(need);
     free(maximum);
     free(available);
 }
@@ -133,17 +143,25 @@ static void read_customers(void){
     if (n_customers == 0){
         fatal("o arquivo %s está vazio (nenhum cliente encontrado).", CUSTOMER_FILE);
     }
+    allocation = xmalloc(sizeof(int *) * n_customers);
+    need = xmalloc(sizeof(int *) * n_customers);
+    for (int i = 0; i < n_customers; i++){
+        allocation[i] = xmalloc(sizeof(int) * n_resources);
+        need[i] = xmalloc(sizeof(int) * n_resources);
+        memcpy(need[i], maximum[i], sizeof(int) * n_resources);
+    }
 }
 
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
     parse_arguments(argc, argv);
     read_customers();
-        for (int i = 0; i < n_customers; i++){
-        printf("cliente %d:", i);
-        for (int j = 0; j < n_resources; j++){
-            printf(" %d", maximum[i][j]);
-        }
+    for (int i = 0; i < n_customers; i++){
+        for (int j = 0; j < n_resources; j++) printf("%d ", maximum[i][j]);
+        printf("| ");
+        for (int j = 0; j < n_resources; j++) printf("%d ", allocation[i][j]);
+        printf("| ");
+        for (int j = 0; j < n_resources; j++) printf("%d ", need[i][j]);
         printf("\n");
     }
     free_all();

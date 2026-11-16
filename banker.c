@@ -368,6 +368,32 @@ static void release_resources(FILE *out, int c, const int *rel){
     fprintf(out, "\n");
 }
 
+static void fprint_column(FILE *out, const int *v, int width){
+    int written = 0;
+    for (int j = 0; j < n_resources; j++){
+        written += fprintf(out, "%d ", v[j]);
+    }
+    while (written < width){
+        fprintf(out, " ");
+        written++;
+    }
+}
+
+static void print_state(FILE *out){
+    fprintf(out, "MAXIMUM   |   ALLOCATION  |   NEED\n");
+    for (int i = 0; i < n_customers; i++){
+        fprint_column(out, maximum[i], 10);
+        fprintf(out, "|   ");
+        fprint_column(out, allocation[i], 12);
+        fprintf(out, "|   ");
+        fprint_column(out, need[i], 0);
+        fprintf(out, "\n");
+    }
+    fprintf(out, "AVAILABLE ");
+    fprint_column(out, available, 0);
+    fprintf(out, "\n");
+}
+
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
     parse_arguments(argc, argv);
@@ -383,6 +409,10 @@ int main(int argc, char *argv[]){
             request_resources(out, commands[k].customer, commands[k].values);
         } else if (commands[k].type == CMD_RELEASE){
             release_resources(out, commands[k].customer, commands[k].values);
+        } else if (commands[k].type == CMD_RELEASE){
+            release_resources(out, commands[k].customer, commands[k].values);
+        } else if (commands[k].type == CMD_PRINT){
+            print_state(out);
         }
     }
 

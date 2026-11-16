@@ -346,6 +346,28 @@ static void request_resources(FILE *out, int c, const int *req){
     fprintf(out, "\n");
 }
 
+static void release_resources(FILE *out, int c, const int *rel){
+    /* não dá para devolver mais do que o cliente tem */
+    for (int j = 0; j < n_resources; j++){
+        if (rel[j] > allocation[c][j]){
+            fprintf(out, "The customer %d release ", c);
+            fprint_vector(out, rel);
+            fprintf(out, " was denied because exceed its allocation\n");
+            return;
+        }
+    }
+
+    for (int j = 0; j < n_resources; j++){
+        allocation[c][j] -= rel[j];
+        need[c][j] += rel[j];
+        available[j] += rel[j];
+    }
+
+    fprintf(out, "Release from customer %d the resources ", c);
+    fprint_vector(out, rel);
+    fprintf(out, "\n");
+}
+
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
     parse_arguments(argc, argv);
@@ -359,6 +381,8 @@ int main(int argc, char *argv[]){
     for (int k = 0; k < n_commands; k++){
         if (commands[k].type == CMD_REQUEST){
             request_resources(out, commands[k].customer, commands[k].values);
+        } else if (commands[k].type == CMD_RELEASE){
+            release_resources(out, commands[k].customer, commands[k].values);
         }
     }
 

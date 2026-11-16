@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #define CUSTOMER_FILE "customer.txt"
 #define COMMANDS_FILE "commands.txt"
+#define RESULT_FILE "result.txt"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -293,15 +294,76 @@ static bool is_safe(void){
     return finished == n_customers;
 }
 
+static void fprint_vector(FILE *out, const int *v){
+    for (int j = 0; j < n_resources; j++){
+        if (j > 0){
+            fprintf(out, " ");
+        }
+        fprintf(out, "%d", v[j]);
+    }
+}
+
+static void request_resources(FILE *out, int c, const int *req){
+    for (int j = 0; j < n_resources; j++){
+        if (req[j] > need[c][j]){
+            fprintf(out, "The customer %d request ", c);
+            fprint_vector(out, req);
+            fprintf(out, " was denied because exceed its maximum allocation\n");
+            return;
+        }
+    }
+
+    for (int j = 0; j < n_resources; j++){
+        if (req[j] > available[j]){
+            fprintf(out, "The resources ");
+            fprint_vector(out, available);
+            fprintf(out, " are not enough to customer %d request ", c);
+            fprint_vector(out, req);
+            fprintf(out, " \n");
+            return;
+        }
+    }
+    for (int j = 0; j < n_resources; j++){
+        available[j] -= req[j];
+        allocation[c][j] += req[j];
+        need[c][j] -= req[j];
+    }
+
+    if (!is_safe()){
+        for (int j = 0; j < n_resources; j++){
+            available[j] += req[j];
+            allocation[c][j] -= req[j];
+            need[c][j] += req[j];
+        }
+        fprintf(out, "The customer %d request ", c);
+        fprint_vector(out, req);
+        fprintf(out, " was denied because result in an unsafe state\n");
+        return;
+    }
+
+    fprintf(out, "Allocate to customer %d the resources ", c);
+    fprint_vector(out, req);
+    fprintf(out, "\n");
+}
+
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
     parse_arguments(argc, argv);
     read_customers();
     read_commands();
-    if (is_safe()){
-        printf("estado inicial seguro\n");
-    } else {
-        printf("estado inicial inseguro\n");
+    FILE *out = fopen(RESULT_FILE, "w");
+    if (!out){
+        fatal("não foi possível criar o arquivo %s: %s.", RESULT_FILE, strerror(errno));
+    }
+
+    for (int k = 0; k < n_commands; k++){
+        if (commands[k].type == CMD_REQUEST){
+            request_resources(out, commands[k].customer, commands[k].values);
+        }
+    }
+
+    if (fclose(out) != 0){
+        fatal("falha ao gravar o arquivo %s.", RESULT_FILE);
     }
     free_all();
     return EXIT_SUCCESS; 

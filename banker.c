@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #define CUSTOMER_FILE "customer.txt"
+#define COMMANDS_FILE "commands.txt"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -10,12 +11,22 @@
 #include <stdbool.h>
 #include <string.h>
 
+typedef enum { CMD_REQUEST, CMD_RELEASE, CMD_PRINT } cmd_type_t;
+
+typedef struct {
+    cmd_type_t type;
+    int customer;
+    int *values;
+} command_t;
+
 static int n_resources = 0;
 static int *available = NULL;
 static int n_customers = 0;
 static int **maximum = NULL;
 static int **allocation = NULL;
 static int **need = NULL;
+static command_t *commands = NULL;
+static int n_commands = 0;
 
 static void free_all(void){
     for (int i = 0; i < n_customers; i++){
@@ -31,6 +42,10 @@ static void free_all(void){
     free(need);
     free(maximum);
     free(available);
+    for (int k = 0; k < n_commands; k++){
+        free(commands[k].values);
+    }
+    free(commands);
 }
 
 static void fatal(const char *fmt, ...){
@@ -109,7 +124,11 @@ static void read_customers(void){
             fatal("%s, linha %d: o cliente possui %d recurso(s), mas foram " "informados %d recurso(s) na linha de comando.", CUSTOMER_FILE, line_no, fields, n_resources);
         }
         if (n_customers == capacity){
-            capacity = capacity ? capacity * 2 : 8;
+            if (capacity == 0){
+                capacity = 8;
+            } else {
+                capacity = capacity * 2;
+            }
             int **tmp = realloc(maximum, sizeof(int *) * capacity);
             if (!tmp){
                 free(line);
@@ -152,16 +171,96 @@ static void read_customers(void){
     }
 }
 
+static void read_commands(void){
+    FILE *f = fopen(COMMANDS_FILE, "r");
+    if (!f){
+        fatal("não foi possível abrir o arquivo %s: %s.", COMMANDS_FILE, strerror(errno));
+    }
+
+    char *line = NULL;
+    size_t cap = 0;
+    int line_no = 0;
+    int capacity = 0;
+
+    while (getline(&line, &cap, f) != -1){
+        line_no++;
+        line[strcspn(line, "\r\n")] = '\0';
+        char *tok = strtok(line, " \t");
+        if (tok == NULL){
+            continue;
+        }
+        if (n_commands == capacity){
+            if (capacity == 0){
+                capacity = 16;
+            } else {
+                capacity = capacity * 2;
+            }
+            command_t *tmp = realloc(commands, sizeof(command_t) * capacity);
+            if (!tmp){
+                free(line);
+                fclose(f);
+                fatal("memória insuficiente.");
+            }
+            commands = tmp;
+        }
+        command_t *cmd = &commands[n_commands];
+        cmd->values = NULL;
+        cmd->customer = -1;
+        n_commands++;
+        if (strcmp(tok, "*") == 0){
+            cmd->type = CMD_PRINT;
+            continue;
+        }
+        if (strcmp(tok, "RQ") == 0){
+            cmd->type = CMD_REQUEST;
+        } else if (strcmp(tok, "RL") == 0){
+            cmd->type = CMD_RELEASE;
+        } else {
+            char copy[32];
+            snprintf(copy, sizeof copy, "%s", tok);
+            free(line);
+            fclose(f);
+            fatal("%s, linha %d: comando \"%s\" desconhecido (esperado RQ, RL ou *).", COMMANDS_FILE, line_no, copy);
+        }
+        tok = strtok(NULL, " \t");
+        if (!parse_nonneg_int(tok, &cmd->customer)){
+            free(line);
+            fclose(f);
+            fatal("%s, linha %d: número do cliente ausente ou inválido.", COMMANDS_FILE, line_no);
+        }
+
+        cmd->values = xmalloc(sizeof(int) * n_resources);
+        for (int j = 0; j < n_resources; j++){
+            tok = strtok(NULL, " \t");
+            if (!parse_nonneg_int(tok, &cmd->values[j])){
+                free(line);
+                fclose(f);
+                fatal("%s, linha %d: quantidade de recurso ausente ou inválida.", COMMANDS_FILE, line_no);
+            }
+        }
+    }
+    free(line);
+    fclose(f);
+}
+
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
     parse_arguments(argc, argv);
     read_customers();
-    for (int i = 0; i < n_customers; i++){
-        for (int j = 0; j < n_resources; j++) printf("%d ", maximum[i][j]);
-        printf("| ");
-        for (int j = 0; j < n_resources; j++) printf("%d ", allocation[i][j]);
-        printf("| ");
-        for (int j = 0; j < n_resources; j++) printf("%d ", need[i][j]);
+    read_commands();
+    for (int k = 0; k < n_commands; k++){
+        if (commands[k].type == CMD_PRINT){
+            printf("*\n");
+            continue;
+        }
+        if (commands[k].type == CMD_REQUEST){
+            printf("RQ %d", commands[k].customer);
+        } else {
+            printf("RL %d", commands[k].customer);
+        }        
+        for (int j = 0; j < n_resources; j++){
+            printf(" %d", commands[k].values[j]);
+        }
         printf("\n");
     }
     free_all();

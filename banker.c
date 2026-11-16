@@ -396,7 +396,6 @@ static void print_state(FILE *out){
 
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
-    parse_arguments(argc, argv);
     read_customers();
     read_commands();
     FILE *out = fopen(RESULT_FILE, "w");
@@ -407,8 +406,6 @@ int main(int argc, char *argv[]){
     for (int k = 0; k < n_commands; k++){
         if (commands[k].type == CMD_REQUEST){
             request_resources(out, commands[k].customer, commands[k].values);
-        } else if (commands[k].type == CMD_RELEASE){
-            release_resources(out, commands[k].customer, commands[k].values);
         } else if (commands[k].type == CMD_RELEASE){
             release_resources(out, commands[k].customer, commands[k].values);
         } else if (commands[k].type == CMD_PRINT){

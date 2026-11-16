@@ -228,15 +228,31 @@ static void read_commands(void){
             fclose(f);
             fatal("%s, linha %d: número do cliente ausente ou inválido.", COMMANDS_FILE, line_no);
         }
+        if (cmd->customer >= n_customers){
+            int c = cmd->customer;
+            free(line);
+            fclose(f);
+            fatal("%s, linha %d: cliente %d não existe (há %d cliente(s) em %s, numerados de 0 a %d).", COMMANDS_FILE, line_no, c, n_customers, CUSTOMER_FILE, n_customers - 1);
+        }
 
         cmd->values = xmalloc(sizeof(int) * n_resources);
-        for (int j = 0; j < n_resources; j++){
-            tok = strtok(NULL, " \t");
-            if (!parse_nonneg_int(tok, &cmd->values[j])){
-                free(line);
-                fclose(f);
-                fatal("%s, linha %d: quantidade de recurso ausente ou inválida.", COMMANDS_FILE, line_no);
+        int count = 0;
+        tok = strtok(NULL, " \t");
+        while (tok != NULL){
+            if (count < n_resources){
+                if (!parse_nonneg_int(tok, &cmd->values[count])){
+                    free(line);
+                    fclose(f);
+                    fatal("%s, linha %d: quantidade de recurso inválida (esperado inteiro não negativo).", COMMANDS_FILE, line_no);
+                }
             }
+            count++;
+            tok = strtok(NULL, " \t");
+        }
+        if (count != n_resources){
+            free(line);
+            fclose(f);
+            fatal("%s, linha %d: o comando possui %d recurso(s), mas foram " "informados %d recurso(s) na linha de comando.", COMMANDS_FILE, line_no, count, n_resources);
         }
     }
     free(line);

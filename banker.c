@@ -259,25 +259,49 @@ static void read_commands(void){
     fclose(f);
 }
 
+static bool is_safe(void){
+    int *work = xmalloc(sizeof(int) * n_resources);
+    bool *finish = xmalloc(sizeof(bool) * n_customers);
+    memcpy(work, available, sizeof(int) * n_resources);
+    int finished = 0;
+    bool progress = true;
+    while (progress){
+        progress = false;
+        for (int i = 0; i < n_customers; i++){
+            if (finish[i]){
+                continue;
+            }
+            bool can_finish = true;
+            for (int j = 0; j < n_resources; j++){
+                if (need[i][j] > work[j]){
+                    can_finish = false;
+                    break;
+                }
+            }
+            if (can_finish){
+                for (int j = 0; j < n_resources; j++){
+                    work[j] += allocation[i][j];
+                }
+                finish[i] = true;
+                finished++;
+                progress = true;
+            }
+        }
+    }
+    free(work);
+    free(finish);
+    return finished == n_customers;
+}
+
 int main(int argc, char *argv[]){
     parse_arguments(argc, argv);
     parse_arguments(argc, argv);
     read_customers();
     read_commands();
-    for (int k = 0; k < n_commands; k++){
-        if (commands[k].type == CMD_PRINT){
-            printf("*\n");
-            continue;
-        }
-        if (commands[k].type == CMD_REQUEST){
-            printf("RQ %d", commands[k].customer);
-        } else {
-            printf("RL %d", commands[k].customer);
-        }        
-        for (int j = 0; j < n_resources; j++){
-            printf(" %d", commands[k].values[j]);
-        }
-        printf("\n");
+    if (is_safe()){
+        printf("estado inicial seguro\n");
+    } else {
+        printf("estado inicial inseguro\n");
     }
     free_all();
     return EXIT_SUCCESS; 
